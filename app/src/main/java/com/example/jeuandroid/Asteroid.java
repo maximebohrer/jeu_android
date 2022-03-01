@@ -12,12 +12,21 @@ public class Asteroid {
     Path pattern;
     int frequency = 1000;
 
-    Asteroid(ImageView imageViewOfAsteroid){
+    Asteroid(ImageView imageViewOfAsteroid, Path pattern){
         this.imageViewOfAsteroid = imageViewOfAsteroid;
+        this.pattern = pattern;
+        animate();
+    }
+    Asteroid(ImageView imageViewOfAsteroid, Path pattern, int frequency){
+        this.imageViewOfAsteroid = imageViewOfAsteroid;
+        this.pattern = pattern;
+        this.frequency = frequency;
+        animate();
     }
 
     public void setPattern(Path pattern) {
         this.pattern = pattern;
+        animate();
     }
 
     public void setFrequency(int frequency) {
