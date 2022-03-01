@@ -27,7 +27,19 @@
         <ImageView
             android:id="@+id/tie"
             android:layout_width="160dp"
-            android:layout_height="188dp"
+            android:layout_height="99dp"
             app:srcCompat="@drawable/tie" />
+
+        <ImageView
+            android:id="@+id/asteroid"
+            android:layout_width="96dp"
+            android:layout_height="93dp"
+            app:srcCompat="@drawable/asteroid1" />
+
+        <ImageView
+            android:id="@+id/asteroid2"
+            android:layout_width="93dp"
+            android:layout_height="90dp"
+            app:srcCompat="@drawable/asteroid4" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

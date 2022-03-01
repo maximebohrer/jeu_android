@@ -13,7 +13,6 @@ public class Tie {
     float x, y, angle, V, newV, xMax, yMax, w, h;
     final float frottements = 0.002f;
 
-
     public Tie(ImageView tieImage){
         this.tieImage = tieImage;
         this.w = tieImage.getWidth();
@@ -56,7 +55,7 @@ public class Tie {
     }
 
     public void setSpeed(float xCoeff, float yCoeff) {
-        newV = (float) Math.sqrt(xCoeff * xCoeff + yCoeff * yCoeff) * 1;
+        newV = (float) Math.sqrt(xCoeff * xCoeff + yCoeff * yCoeff) * 1.5f;
         if (!(xCoeff == 0) && !(yCoeff == 0)) {
             if (xCoeff == 0) angle = (float)(yCoeff > 0 ? Math.PI / 2 : - Math.PI / 2);
             else if (yCoeff == 0) angle = (float)(xCoeff > 0 ? 0 : Math.PI);
