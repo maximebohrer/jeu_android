@@ -1,7 +1,7 @@
 package com.example.jeuandroid;
 
 import android.animation.ObjectAnimator;
-import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -32,20 +32,25 @@ public class Asteroid {
     public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
-
-    Rect getHitBox2(){
-        int[] position = new int[2];
-        imageViewOfAsteroid.getLocationOnScreen(position);
-        return new Rect(position[0], position[1], position[0] + imageViewOfAsteroid.getMeasuredWidth(), position[1] + imageViewOfAsteroid.getMeasuredHeight());
-    }
-
+    
     Path getHitBox(){
         Path path = new Path();
-        int[] position = new int[2];
-        imageViewOfAsteroid.getLocationOnScreen(position);
-        float x = position[0];
-        float y = position[1];
-        path.addCircle(x,y,0.5f, Path.Direction.CW);
+        float x = imageViewOfAsteroid.getX();
+        float y = imageViewOfAsteroid.getY();
+        float w = imageViewOfAsteroid.getMeasuredWidth();
+        float h = imageViewOfAsteroid.getMeasuredHeight();
+        path.arcTo(x,y,x+w,y+h,0f, 359f, true);
+        return path;
+    }
+
+    Path getHitBox2(){
+        Path path = new Path();
+        float x = imageViewOfAsteroid.getX();
+        float y = imageViewOfAsteroid.getY();
+        float w = imageViewOfAsteroid.getMeasuredWidth();
+        float h = imageViewOfAsteroid.getMeasuredHeight();
+        RectF rectF = new RectF(x, y, x + w, y+h);
+        path.addRect(rectF, Path.Direction.CW);
         return path;
     }
 
