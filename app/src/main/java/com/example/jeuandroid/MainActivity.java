@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -37,8 +39,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ImageView padExt;
     ImageView tieImage;
     ImageView asteroidImage;
+    ImageView extraterrestreImage;
     Tie tie;
     Asteroid asteroid;
+    Asteroid extraterrestre;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -54,10 +58,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         asteroidImage = (ImageView) findViewById(R.id.asteroid);
 
         tie = new Tie(tieImage);
-        asteroid = new Asteroid(asteroidImage);
-        asteroid.setPattern(Pattern.getSerpent());
-        asteroid.setFrequency(16000);
-        asteroid.animate();
+
+        //===========================
+        Path path = new Path();
+        path.arcTo(500f,500f,500f,500f,0f,0f,true);
+        asteroid = new Asteroid(asteroidImage, path, 16000);
+
+
+        //==========================
 
         //Layout listener pour placer le joystick
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -69,15 +77,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Touch listener sur le vaisseau pour permettre le changement joystick / accelerometre
         tieImage.setOnTouchListener((v, event) -> {
-            switch (event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    if (useAccelerometer) usePad();
-                    else useAccelerometer();
-                    break;
-                default:
-                    return false;
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (useAccelerometer) usePad();
+                else useAccelerometer();
+                return true;
             }
-            return true;
+            return false;
         });
 
         //Touch listener pour gérer le joystick
@@ -171,5 +176,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+}
+
+
+class ZoneAnimation extends View {
+    Paint paint;
+    int balleX, balleY;
+    public ZoneAnimation(Context context) {
+        super(context);
+        paint = new Paint();
+        paint. setAntiAlias (true);
+        balleX = 50;
+        balleY = 50;
+    }
+    protected void onDraw(Canvas canvas) {
+        try {
+            Thread.sleep(50); // a entourer d’un try ... catch: proposition automatique par eclipse
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        canvas.drawCircle (balleX, balleY,50, paint );
+        balleX++;
+        balleY++;
+        invalidate ();
     }
 }

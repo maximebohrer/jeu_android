@@ -33,11 +33,22 @@ public class Asteroid {
         this.frequency = frequency;
     }
 
-    Rect getHitBox(){
+    Rect getHitBox2(){
         int[] position = new int[2];
         imageViewOfAsteroid.getLocationOnScreen(position);
         return new Rect(position[0], position[1], position[0] + imageViewOfAsteroid.getMeasuredWidth(), position[1] + imageViewOfAsteroid.getMeasuredHeight());
     }
+
+    Path getHitBox(){
+        Path path = new Path();
+        int[] position = new int[2];
+        imageViewOfAsteroid.getLocationOnScreen(position);
+        float x = position[0];
+        float y = position[1];
+        path.addCircle(x,y,0.5f, Path.Direction.CW);
+        return path;
+    }
+
     void animate(){
         ObjectAnimator animatorsOfAsteroid = ObjectAnimator.ofFloat(imageViewOfAsteroid, View.X, View.Y, pattern);
         animatorsOfAsteroid.setDuration(frequency);

@@ -41,5 +41,11 @@
             android:layout_width="93dp"
             android:layout_height="90dp"
             app:srcCompat="@drawable/asteroid4" />
+
+        <ImageView
+            android:id="@+id/extraterrestre"
+            android:layout_width="42dp"
+            android:layout_height="46dp"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
