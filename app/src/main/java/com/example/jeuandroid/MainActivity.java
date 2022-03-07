@@ -28,6 +28,20 @@ import java.util.ArrayList;
 ║        POUR REVENIR EN MODE JOYSTICK,                ║
 ║        CLIQUER SUR LE VAISSEAU                       ║
 ║                                                      ║
+║══════════════════════════════════════════════════════║
+║                                                      ║
+║        LA COLLISION EST GERER PAR UN HANDLER         ║
+║        ET UN RUNNABLE                                ║
+║        QUI OBSERVE CONSTAMMENT                       ║
+║        S'IL Y A UNE COLLISION                        ║
+║        ENTRE LA HITBOX DU VAISSEAU                   ║
+║        ET CELLE D'UN ASTEROIDE,                      ║
+║        LES HITBOX SONT DES PATH                      ║
+║        QUI ENTOUR L'IMAGE DE SON OBJET,              ║
+║        UNE COLLISION ENTRE DEUX HITBOX EST DETECTE   ║
+║        LORSQUE L'INTERSECTION DES DEUX PATH          ║
+║        EST NON VIDE                                  ║
+║                                                      ║
 ╚══════════════════════════════════════════════════════╝
  */
 
