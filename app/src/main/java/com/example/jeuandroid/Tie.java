@@ -2,7 +2,6 @@ package com.example.jeuandroid;
 
 import android.graphics.Path;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import java.lang.Math;
@@ -80,6 +79,7 @@ public class Tie {
     public Path getHitBox(){
         Path path = new Path();
 
+        //Les points de coordonnées (x,y) suivant ont été trouvé empiriquement afin d'avoir une hitBox proche de l'image du vaisseau lorsqu'il est a l'état initiale (sans rotation)
         float x1, y1;
         x1 = x;
         y1 = y + h/3;
@@ -111,7 +111,7 @@ public class Tie {
         x10 = x;
         y10 = y + h*2/3;
 
-        //Effectue une rotation des coordonnées
+        //Effectue une rotation des points par rapport au centre du vaisseau en fonction de la rotation de l'image du vaisseau
         float[] point1 = new float[]{x1, y1};
         float[] point2 = new float[]{x2, y2};
         float[] point3 = new float[]{x3, y3};

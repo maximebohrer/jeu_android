@@ -3,7 +3,6 @@ package com.example.jeuandroid;
 import android.animation.ObjectAnimator;
 import android.graphics.RectF;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ public class Asteroid {
     ObjectAnimator animatorsOfAsteroid = new ObjectAnimator();
     ImageView targetImage;
 
+    //Les différents types de pattern des astéroides, le Pattern.CUSTOM permet d'utiliser ses propres Path
     enum Pattern{
         LINE,
         ARC,
@@ -96,6 +96,7 @@ public class Asteroid {
         animatorsOfAsteroid.end();
     }
 
+    //Renvoie une hitBox circulaire
     Path getHitBox(){
         Path path = new Path();
         float x = asteroidImage.getX();
@@ -120,6 +121,7 @@ public class Asteroid {
         animatorsOfAsteroid.start();
     }
 
+    //Anime les astéroides avec une fréquence et un chemin aléatoire, dès que l'animation se finit, une nouvelle se lance
     void randomAnimation(){
         handlerForRandomAnimaton = new Handler();
         randomAnimation = new Runnable() {
@@ -136,6 +138,7 @@ public class Asteroid {
         randomAnimation.run();
     }
 
+    //Donne à l'astéroïde un nouveau chemin aléatoire en fonction de son type de pattern
     public void setRandomPath(){
         switch (pattern){
             case LINE:
@@ -154,6 +157,7 @@ public class Asteroid {
         }
     }
 
+    //Donne à l'astéroïde un chemin aléatoire qui dessine une droite
     public void setRandomLine(){
         path.reset();
 
@@ -177,6 +181,7 @@ public class Asteroid {
         }
     }
 
+    //Donne à l'astéroïde un chemin aléatoire qui dessine un arc depuis le bas de l'écran
     public void setRandomArc(){
         path.reset();
 
@@ -204,6 +209,7 @@ public class Asteroid {
         path.arcTo(leftBorder, yMax - hauteur/2f, rightBorder, yMax + hauteur/2f, startAngle, sweepAngle, true);
     }
 
+    //Donne à l'astéroïde un chemin aléatoire sinusoïdal
     public void setRandomSerpent(){
         path.reset();
 
@@ -224,6 +230,7 @@ public class Asteroid {
         path.addPath(path2, 0,2*hauteur);
     }
 
+    //Donne à l'astéroïde un chemin qui débute aléatoirement en haut de l'écran puis va vers le centre du vaisseau dessinant ainsi une droite
     public void setFocus(){
         path.reset();
 

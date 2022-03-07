@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //Touch listener sur le vaisseau pour permettre le changement joystick / accelerometre
         tieImage.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                //Commence le jeu lorsque le joueur bouge
                 if(gameState == GameState.CREATING) {
                     gameState = GameState.STARTING;
                     start();
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         padInt.setOnTouchListener((v, event) -> {
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
+                    //Commence le jeu lorsque le joueur bouge
                     if(gameState == GameState.CREATING){
                         gameState = GameState.STARTING;
                         start();
@@ -260,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         collisionTie.run();
     }
 
+    //Renvoie true si le vaisseau touche un astéroide, sinon renvoie false
     public boolean isColliding(){
         Path path = new Path();
         Path hitBoxTie = tie.getHitBox();
