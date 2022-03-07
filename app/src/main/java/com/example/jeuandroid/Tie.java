@@ -82,32 +82,61 @@ public class Tie {
 
         float x1, y1;
         x1 = x;
-        y1 = y;
+        y1 = y + h/3;
         float x2, y2;
-        x2 = x1 + w;
+        x2 = x + w/5;
         y2 = y;
         float x3, y3;
-        x3 = x2;
-        y3 = y2 + h;
+        x3 = x + w/2;
+        y3 = y + h/3;
         float x4, y4;
-        x4 = x3 - w;
-        y4 = y3;
+        x4 = x + w*4/5;
+        y4 = y;
+        float x5, y5;
+        x5 = x + w;
+        y5 = y + h/3;
+        float x6, y6;
+        x6 = x + w;
+        y6 = y + h*2/3;
+        float x7, y7;
+        x7 = x + w*4/5;
+        y7 = y + h;
+        float x8, y8;
+        x8 = x + w/2;
+        y8 = y + h*2/3;
+        float x9, y9;
+        x9 = x + w/5;
+        y9 = y + h;
+        float x10, y10;
+        x10 = x;
+        y10 = y + h*2/3;
 
         //Effectue une rotation des coordonnées
         float[] point1 = new float[]{x1, y1};
         float[] point2 = new float[]{x2, y2};
         float[] point3 = new float[]{x3, y3};
         float[] point4 = new float[]{x4, y4};
+        float[] point5 = new float[]{x5, y5};
+        float[] point6 = new float[]{x6, y6};
+        float[] point7 = new float[]{x7, y7};
+        float[] point8 = new float[]{x8, y8};
+        float[] point9 = new float[]{x9, y9};
+        float[] point10 = new float[]{x10, y10};
+        float[][] points = new float[][]{point1, point2, point3, point4, point5, point6, point7, point8, point9, point10};
 
-        point1 = rotation(point1);
-        point2 = rotation(point2);
-        point3 = rotation(point3);
-        point4 = rotation(point4);
-
-        path.moveTo(point1[0], point1[1]);
-        path.lineTo(point2[0], point2[1]);
-        path.lineTo(point3[0], point3[1]);
-        path.lineTo(point4[0], point4[1]);
+        float[] point;
+        float xp, yp;
+        for(int i=0; i<points.length; i++){
+            point = rotation(points[i]);
+            xp = point[0];
+            yp = point[1];
+            if(i==0){
+                path.moveTo(xp,yp);
+            }
+            else {
+                path.lineTo(xp,yp);
+            }
+        }
         path.close();
         return path;
     }
