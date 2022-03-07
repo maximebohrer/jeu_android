@@ -3,7 +3,9 @@ package com.example.jeuandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -12,10 +14,14 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -38,11 +44,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ImageView padInt;
     ImageView padExt;
     ImageView tieImage;
-    ImageView asteroidImage;
-    ImageView extraterrestreImage;
+    ImageView explosionImage;
+    ImageView asteroidLineImage;
+    ImageView asteroidArcImage;
+    ImageView asteroidSerpentImage;
+    ImageView asteroidImage4;
     Tie tie;
-    Asteroid asteroid;
-    Asteroid extraterrestre;
+    Asteroid asteroidLine;
+    Asteroid asteroidArc;
+    Asteroid asteroidSerpent;
+    Asteroid asteroid4;
+    TextView scoreText;
+
+    Handler handlerForCollisionTie;
+    Runnable collisionTie;
+    int score = 0;
+    ArrayList<Asteroid> asteroids = new ArrayList<>();
+
+    enum GameState{
+        CREATING,
+        STARTING,
+        RUNNING,
+        STOPPING,
+    }
+    GameState gameState = GameState.CREATING;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -55,29 +80,45 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         padInt = (ImageView) findViewById(R.id.padInt);
         padExt = (ImageView) findViewById(R.id.padExt);
         tieImage = (ImageView) findViewById(R.id.tie);
-        asteroidImage = (ImageView) findViewById(R.id.asteroid);
+        explosionImage = (ImageView) findViewById(R.id.explosion);
+        asteroidLineImage = (ImageView) findViewById(R.id.asteroid);
+        asteroidArcImage = (ImageView) findViewById(R.id.asteroid2);
+        asteroidSerpentImage = (ImageView) findViewById(R.id.asteroid3);
+        asteroidImage4 = (ImageView) findViewById(R.id.asteroid4);
+        scoreText = findViewById(R.id.scoreText);
 
-        tie = new Tie(tieImage);
+        tie = new Tie(tieImage, explosionImage);
 
-        //===========================
-        Path path = new Path();
-        path.arcTo(500f,500f,500f,500f,0f,0f,true);
-        asteroid = new Asteroid(asteroidImage, path, 16000);
-
-
-        //==========================
+        asteroidLine = new Asteroid(asteroidLineImage, Asteroid.Pattern.LINE);
+        asteroidArc = new Asteroid(asteroidArcImage, Asteroid.Pattern.ARC);
+        asteroidSerpent = new Asteroid(asteroidSerpentImage, Asteroid.Pattern.SERPENT);
+        asteroids.add(asteroidLine);
+        asteroids.add(asteroidArc);
+        asteroids.add(asteroidSerpent);
 
         //Layout listener pour placer le joystick
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             positionPadExt();
             positionPadInt();
+            positionScoreText();
             tie.setMaxScreenXY(mainLayout.getWidth(), mainLayout.getHeight());
             tie.setImageWH();
+            for(Asteroid asteroid : asteroids){
+                asteroid.setMaxScreenXY(mainLayout.getWidth(), mainLayout.getHeight());
+                asteroid.setImageWH();
+            }
+            if(gameState == GameState.CREATING){
+                tie.reset();
+            }
         });
 
         //Touch listener sur le vaisseau pour permettre le changement joystick / accelerometre
         tieImage.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if(gameState == GameState.CREATING) {
+                    gameState = GameState.STARTING;
+                    start();
+                }
                 if (useAccelerometer) usePad();
                 else useAccelerometer();
                 return true;
@@ -89,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         padInt.setOnTouchListener((v, event) -> {
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
+                    if(gameState == GameState.CREATING){
+                        gameState = GameState.STARTING;
+                        start();
+                    }
                     xStart = event.getX();
                     yStart = event.getY();
                     break;
@@ -124,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         });
 
         tie.startMove();
+        collisionManager();
     }
 
     void positionPadExt() {
@@ -176,6 +222,93 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    void positionScoreText() {
+        scoreText.setX(mainLayout.getWidth() / 2f - scoreText.getWidth() / 2f);
+        scoreText.setY(50f);
+    }
+
+    //Gère la collision avec le vaisseau
+    public void collisionManager(){
+        handlerForCollisionTie = new Handler();
+        int delay = 10;
+        collisionTie = new Runnable() {
+            @Override
+            public void run() {
+                if(isColliding() && gameState!=GameState.STOPPING){
+                    gameOver();
+                }
+                else if(gameState == GameState.RUNNING) {
+                    score += 1;
+                    scoreText.setText(String.valueOf(score));
+                }
+                handlerForCollisionTie.postDelayed(this, delay);
+            }
+        };
+        collisionTie.run();
+    }
+
+    public boolean isColliding(){
+        Path path = new Path();
+        Path hitBoxTie = tie.getHitBox();
+        for (Asteroid asteroid : asteroids) {
+            path.op(hitBoxTie, asteroid.getHitBox(), Path.Op.INTERSECT);
+            if (!path.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void gameOver(){
+        gameState=GameState.STOPPING;
+        stop();
+        gameOverMessage();
+    }
+
+    public void gameOverMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(tieImage.getContext());
+        builder.setTitle("Game over");
+        builder.setMessage("Score : " + score);
+        builder.setPositiveButton("Recommencer", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                reset();
+                gameState = GameState.CREATING;
+            }
+        });
+        builder.setNegativeButton("Quitter", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    //Gère le jeu
+    public void reset(){
+        score = 0;
+        scoreText.setText("0");
+        tie.reset();
+        for (Asteroid asteroid : asteroids) {
+            asteroid.reset();
+        }
+        if(useAccelerometer) usePad();
+    }
+
+    public void start(){
+        gameState = GameState.RUNNING;
+        for (Asteroid asteroid : asteroids) {
+            asteroid.start();
+        }
+    }
+
+    public void stop(){
+        tie.explode();
+        for(Asteroid asteroid : asteroids){
+            asteroid.stop();
+        }
     }
 }
 
