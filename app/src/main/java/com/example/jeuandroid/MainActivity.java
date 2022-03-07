@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     ImageView asteroidLineImage;
     ImageView asteroidArcImage;
     ImageView asteroidSerpentImage;
-    ImageView asteroidImage4;
+    ImageView asteroidFocusImage;
     Tie tie;
     Asteroid asteroidLine;
     Asteroid asteroidArc;
     Asteroid asteroidSerpent;
-    Asteroid asteroid4;
+    Asteroid asteroidFocus;
     TextView scoreText;
 
     Handler handlerForCollisionTie;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         asteroidLineImage = (ImageView) findViewById(R.id.asteroid);
         asteroidArcImage = (ImageView) findViewById(R.id.asteroid2);
         asteroidSerpentImage = (ImageView) findViewById(R.id.asteroid3);
-        asteroidImage4 = (ImageView) findViewById(R.id.asteroid4);
+        asteroidFocusImage = (ImageView) findViewById(R.id.asteroid4);
         scoreText = findViewById(R.id.scoreText);
 
         tie = new Tie(tieImage, explosionImage);
@@ -92,9 +92,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         asteroidLine = new Asteroid(asteroidLineImage, Asteroid.Pattern.LINE);
         asteroidArc = new Asteroid(asteroidArcImage, Asteroid.Pattern.ARC);
         asteroidSerpent = new Asteroid(asteroidSerpentImage, Asteroid.Pattern.SERPENT);
+        asteroidFocus = new Asteroid(asteroidFocusImage, tieImage);
         asteroids.add(asteroidLine);
         asteroids.add(asteroidArc);
         asteroids.add(asteroidSerpent);
+        asteroids.add(asteroidFocus);
 
         //Layout listener pour placer le joystick
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {

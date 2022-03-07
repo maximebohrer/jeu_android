@@ -23,11 +23,13 @@ public class Asteroid {
     boolean started = false;
     boolean firstStart = true;
     ObjectAnimator animatorsOfAsteroid = new ObjectAnimator();
+    ImageView targetImage;
 
     enum Pattern{
         LINE,
         ARC,
         SERPENT,
+        FOCUS,
         CUSTOM
     }
 
@@ -42,6 +44,10 @@ public class Asteroid {
     Asteroid(ImageView asteroidImage, Pattern pattern){
         this.asteroidImage = asteroidImage;
         this.pattern = pattern;
+    }
+    Asteroid(ImageView asteroidFocusImage, ImageView targetImage){
+        this(asteroidFocusImage, Pattern.FOCUS);
+        this.targetImage = targetImage;
     }
 
     public void setCustomPath(Path customPath) {
@@ -70,6 +76,9 @@ public class Asteroid {
             switch (pattern){
                 case CUSTOM:
                     animate(true);
+                    break;
+                case FOCUS:
+                    if(targetImage!=null) randomAnimation();
                     break;
                 default:
                     randomAnimation();
@@ -138,6 +147,10 @@ public class Asteroid {
             case SERPENT:
                 setRandomSerpent();
                 break;
+            case FOCUS:
+                setFocus();
+                break;
+            default:
         }
     }
 
@@ -193,5 +206,23 @@ public class Asteroid {
         path.addPath(path2);
         path.addPath(path2, 0,hauteur);
         path.addPath(path2, 0,2*hauteur);
+    }
+
+    public void setFocus(){
+        path.reset();
+
+        float x1 = random.nextFloat()*xMax;
+        float y1 = 0f - asteroidImage.getMeasuredHeight();
+
+        float xTarget = targetImage.getX() + targetImage.getMeasuredWidth()/2f;
+        float yTarget = targetImage.getY() + targetImage.getMeasuredHeight()/2f;
+
+        float tauxAcroissement = (xTarget - x1)/(yTarget - y1);
+        float y2 = yMax + asteroidImage.getMeasuredHeight();
+        float x2 = tauxAcroissement*y2 + x1;
+
+        path.moveTo(x1, y1);
+        path.lineTo(xTarget, yTarget);
+        path.lineTo(x2, y2);
     }
 }
