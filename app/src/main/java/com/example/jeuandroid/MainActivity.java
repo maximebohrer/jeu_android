@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -89,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         padExt = findViewById(R.id.padExt);
         tieImage = findViewById(R.id.tie);
         explosionImage = findViewById(R.id.explosion);
-        asteroidLineImage = findViewById(R.id.asteroid);
-        asteroidArcImage = findViewById(R.id.asteroid2);
-        asteroidSerpentImage = findViewById(R.id.asteroid3);
-        asteroidFocusImage = findViewById(R.id.asteroid4);
+        asteroidLineImage = findViewById(R.id.asteroidLine);
+        asteroidArcImage = findViewById(R.id.asteroidArc);
+        asteroidSerpentImage = findViewById(R.id.asteroidSerpent);
+        asteroidFocusImage = findViewById(R.id.asteroidFocus);
         scoreText = findViewById(R.id.scoreText);
 
         tie = new Tie(tieImage, explosionImage);

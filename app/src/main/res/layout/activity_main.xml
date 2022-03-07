@@ -26,32 +26,32 @@
             app:srcCompat="@drawable/explosion" />
 
         <ImageView
-            android:id="@+id/asteroid"
+            android:id="@+id/asteroidLine"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/asteroid1" />
 
         <ImageView
-            android:id="@+id/asteroid4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/asteroid4" />
-
-        <ImageView
-            android:id="@+id/asteroid3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/asteroid3" />
-
-        <ImageView
-            android:id="@+id/asteroid2"
+            android:id="@+id/asteroidArc"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/asteroid2" />
+
+        <ImageView
+            android:id="@+id/asteroidSerpent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/asteroid4" />
+
+        <ImageView
+            android:id="@+id/asteroidFocus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/asteroid3" />
 
         <ImageView
             android:id="@+id/padExt"
