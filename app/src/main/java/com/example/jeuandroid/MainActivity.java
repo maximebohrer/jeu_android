@@ -21,6 +21,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/*
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║        POUR PASSER EN MODE ACCELEROMETRE,            ║
+║        CLIQUER SUR LE VAISSEAU                       ║
+║        POUR REVENIR EN MODE JOYSTICK,                ║
+║        CLIQUER SUR LE VAISSEAU                       ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+ */
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
