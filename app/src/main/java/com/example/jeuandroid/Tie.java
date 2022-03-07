@@ -1,7 +1,5 @@
 package com.example.jeuandroid;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Path;
 import android.os.Handler;
 import android.util.Log;
@@ -80,6 +78,55 @@ public class Tie {
     }
 
     public Path getHitBox(){
+        Path path = new Path();
+
+        float x1, y1;
+        x1 = x;
+        y1 = y;
+        float x2, y2;
+        x2 = x1 + w;
+        y2 = y;
+        float x3, y3;
+        x3 = x2;
+        y3 = y2 + h;
+        float x4, y4;
+        x4 = x3 - w;
+        y4 = y3;
+
+        //Effectue une rotation des coordonnées
+        float[] point1 = new float[]{x1, y1};
+        float[] point2 = new float[]{x2, y2};
+        float[] point3 = new float[]{x3, y3};
+        float[] point4 = new float[]{x4, y4};
+
+        point1 = rotation(point1);
+        point2 = rotation(point2);
+        point3 = rotation(point3);
+        point4 = rotation(point4);
+
+        path.moveTo(point1[0], point1[1]);
+        path.lineTo(point2[0], point2[1]);
+        path.lineTo(point3[0], point3[1]);
+        path.lineTo(point4[0], point4[1]);
+        path.close();
+        return path;
+    }
+    public float[] rotation(float[] point){
+        float x0 = point[0];
+        float y0 = point[1];
+        float xCentre = x + w/2;
+        x0 -= xCentre;
+        float yCentre = y + h/2;
+        y0 -= yCentre;
+        float temp = x0;
+        x0 = (float) (x0*Math.cos(angle + Math.PI / 2) - y0*Math.sin(angle + Math.PI / 2));
+        y0 = (float) (temp*Math.sin(angle + Math.PI / 2) + y0*Math.cos(angle + Math.PI / 2));
+        x0 += xCentre;
+        y0 += yCentre;
+        return new float[]{x0, y0};
+    }
+
+    public Path getCircleHitBox(){
         Path path = new Path();
         float x = tieImage.getX();
         float y = tieImage.getY();
