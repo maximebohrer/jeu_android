@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             gameState = GameState.CREATING;
         });
         builder.setNegativeButton("Quitter", (dialog, id) -> finish());
+        builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
