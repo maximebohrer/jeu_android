@@ -158,9 +158,14 @@ public class Asteroid {
         path.reset();
 
         float x1 = random.nextFloat()*xMax;
-        float y1 = 0f - asteroidImage.getMeasuredHeight();
+        float y1 = 0f;
         float x2 = random.nextFloat()*xMax;
-        float y2 = yMax + asteroidImage.getMeasuredHeight();
+        float y2 = yMax;
+
+        //Ajustement pour centrer l'astéroide en abscisse
+        y1 -= h;
+        x1 -= w/2;
+        x2 -= w/2;
 
         if(random.nextBoolean()){
             path.moveTo(x1, y1);
@@ -178,6 +183,13 @@ public class Asteroid {
         float hauteur = random.nextFloat()*yMax*2f;
         float leftBorder = random.nextFloat()*xMax/2f;
         float rightBorder = xMax/2f + random.nextFloat()*xMax/2f;
+
+        //Ajustement pour centrer l'astéroide en abscisse
+        hauteur += h;
+        leftBorder -= w/2;
+        rightBorder -= w/2;
+
+
         float startAngle;
         float sweepAngle;
         if(random.nextBoolean()){
@@ -198,6 +210,10 @@ public class Asteroid {
         float hauteur = (random.nextFloat()*100f + yMax/5f)*2f;
         float leftBorder = random.nextFloat()*xMax/2;
         float rightBorder = xMax/2 + random.nextFloat()*xMax/2;
+
+        //Ajustement pour centrer l'astéroide en abscisse
+        leftBorder -= w/2;
+        rightBorder -= w/2;
 
         Path path2 = new Path();
         path2.arcTo(leftBorder, -hauteur/2f, rightBorder, 0f, -90f, -180f, true);
@@ -220,6 +236,14 @@ public class Asteroid {
         float tauxAcroissement = (xTarget - x1)/(yTarget - y1);
         float y2 = yMax + asteroidImage.getMeasuredHeight();
         float x2 = tauxAcroissement*y2 + x1;
+
+        //Ajustement pour centrer l'astéroide
+        x1 -= w/2;
+        y1 -= h/2;
+        xTarget -= w/2;
+        yTarget -= h/2;
+        x2 -= w/2;
+        y2 -= h/2;
 
         path.moveTo(x1, y1);
         path.lineTo(xTarget, yTarget);
