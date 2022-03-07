@@ -3,6 +3,7 @@ package com.example.jeuandroid;
 import android.animation.ObjectAnimator;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -148,8 +149,14 @@ public class Asteroid {
         float x2 = random.nextFloat()*xMax;
         float y2 = yMax + asteroidImage.getMeasuredHeight();
 
-        path.moveTo(x1, y1);
-        path.lineTo(x2, y2);
+        if(random.nextBoolean()){
+            path.moveTo(x1, y1);
+            path.lineTo(x2, y2);
+        }
+        else {
+            path.moveTo(x2, y2);
+            path.lineTo(x1, y1);
+        }
     }
 
     public void setRandomArc(){
@@ -175,7 +182,7 @@ public class Asteroid {
     public void setRandomSerpent(){
         path.reset();
 
-        float hauteur = (random.nextFloat()*200f + 300f)*2f;
+        float hauteur = (random.nextFloat()*100f + yMax/5f)*2f;
         float leftBorder = random.nextFloat()*xMax/2;
         float rightBorder = xMax/2 + random.nextFloat()*xMax/2;
 
@@ -186,6 +193,5 @@ public class Asteroid {
         path.addPath(path2);
         path.addPath(path2, 0,hauteur);
         path.addPath(path2, 0,2*hauteur);
-        path.addPath(path2, 0,3*hauteur);
     }
 }
