@@ -141,18 +141,18 @@ public class Tie {
         return path;
     }
     public float[] rotation(float[] point){
-        float x0 = point[0];
-        float y0 = point[1];
+        float xp = point[0];
+        float yp = point[1];
         float xCentre = x + w/2;
-        x0 -= xCentre;
+        xp -= xCentre;
         float yCentre = y + h/2;
-        y0 -= yCentre;
-        float temp = x0;
-        x0 = (float) (x0*Math.cos(angle + Math.PI / 2) - y0*Math.sin(angle + Math.PI / 2));
-        y0 = (float) (temp*Math.sin(angle + Math.PI / 2) + y0*Math.cos(angle + Math.PI / 2));
-        x0 += xCentre;
-        y0 += yCentre;
-        return new float[]{x0, y0};
+        yp -= yCentre;
+        float temp = xp;
+        xp = (float) (xp*Math.cos(angle + Math.PI / 2) - yp*Math.sin(angle + Math.PI / 2));
+        yp = (float) (temp*Math.sin(angle + Math.PI / 2) + yp*Math.cos(angle + Math.PI / 2));
+        xp += xCentre;
+        yp += yCentre;
+        return new float[]{xp, yp};
     }
 
     public Path getCircleHitBox(){
