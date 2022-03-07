@@ -138,21 +138,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     yStart = event.getY();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    float xMoved = event.getX() - xStart;
-                    float yMoved = event.getY() - yStart;
-                    xCoeff = xMoved / 150f;
-                    yCoeff = yMoved / 150f;
-                    float squaredLength = xCoeff * xCoeff + yCoeff * yCoeff;
-                    if (squaredLength > 1) {
-                        xCoeff /= Math.sqrt(squaredLength);
-                        yCoeff /= Math.sqrt(squaredLength);
-                        Log.d("x", Float.toString(xCoeff));
-                        Log.d("y", Float.toString(yCoeff));
+                    if (gameState == GameState.RUNNING) {
+                        float xMoved = event.getX() - xStart;
+                        float yMoved = event.getY() - yStart;
+                        xCoeff = xMoved / 150f;
+                        yCoeff = yMoved / 150f;
+                        float squaredLength = xCoeff * xCoeff + yCoeff * yCoeff;
+                        if (squaredLength > 1) {
+                            xCoeff /= Math.sqrt(squaredLength);
+                            yCoeff /= Math.sqrt(squaredLength);
+                            Log.d("x", Float.toString(xCoeff));
+                            Log.d("y", Float.toString(yCoeff));
+                        }
+                        xPadOffset = padOffsetFactor * xCoeff;
+                        yPadOffset = padOffsetFactor * yCoeff;
+                        positionPadInt();
+                        tie.setSpeed(xCoeff, yCoeff);
                     }
-                    xPadOffset = padOffsetFactor * xCoeff;
-                    yPadOffset = padOffsetFactor * yCoeff;
-                    positionPadInt();
-                    tie.setSpeed(xCoeff, yCoeff);
                     break;
                 case MotionEvent.ACTION_UP:
                     xCoeff = 0;
