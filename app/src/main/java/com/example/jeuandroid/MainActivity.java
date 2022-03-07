@@ -6,8 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -77,14 +75,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //Objets du layout
         mainLayout = findViewById(R.id.mainLayout);
-        padInt = (ImageView) findViewById(R.id.padInt);
-        padExt = (ImageView) findViewById(R.id.padExt);
-        tieImage = (ImageView) findViewById(R.id.tie);
-        explosionImage = (ImageView) findViewById(R.id.explosion);
-        asteroidLineImage = (ImageView) findViewById(R.id.asteroid);
-        asteroidArcImage = (ImageView) findViewById(R.id.asteroid2);
-        asteroidSerpentImage = (ImageView) findViewById(R.id.asteroid3);
-        asteroidFocusImage = (ImageView) findViewById(R.id.asteroid4);
+        padInt = findViewById(R.id.padInt);
+        padExt = findViewById(R.id.padExt);
+        tieImage = findViewById(R.id.tie);
+        explosionImage = findViewById(R.id.explosion);
+        asteroidLineImage = findViewById(R.id.asteroid);
+        asteroidArcImage = findViewById(R.id.asteroid2);
+        asteroidSerpentImage = findViewById(R.id.asteroid3);
+        asteroidFocusImage = findViewById(R.id.asteroid4);
         scoreText = findViewById(R.id.scoreText);
 
         tie = new Tie(tieImage, explosionImage);
@@ -273,17 +271,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         AlertDialog.Builder builder = new AlertDialog.Builder(tieImage.getContext());
         builder.setTitle("Game over");
         builder.setMessage("Score : " + score);
-        builder.setPositiveButton("Recommencer", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                reset();
-                gameState = GameState.CREATING;
-            }
+        builder.setPositiveButton("Recommencer", (dialog, id) -> {
+            reset();
+            gameState = GameState.CREATING;
         });
-        builder.setNegativeButton("Quitter", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finish();
-            }
-        });
+        builder.setNegativeButton("Quitter", (dialog, id) -> finish());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -311,29 +303,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         for(Asteroid asteroid : asteroids){
             asteroid.stop();
         }
-    }
-}
-
-
-class ZoneAnimation extends View {
-    Paint paint;
-    int balleX, balleY;
-    public ZoneAnimation(Context context) {
-        super(context);
-        paint = new Paint();
-        paint. setAntiAlias (true);
-        balleX = 50;
-        balleY = 50;
-    }
-    protected void onDraw(Canvas canvas) {
-        try {
-            Thread.sleep(50); // a entourer d’un try ... catch: proposition automatique par eclipse
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        canvas.drawCircle (balleX, balleY,50, paint );
-        balleX++;
-        balleY++;
-        invalidate ();
     }
 }
